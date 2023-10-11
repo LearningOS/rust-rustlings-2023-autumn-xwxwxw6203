@@ -44,6 +44,32 @@ impl Default for Person {
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        if s.len() == 0 {
+            Person::default()
+        } else {
+            let mut split = s.split(",");
+            if split.count() != 2 {
+                Person::default()
+            }
+            let name = split.next().unwrap();
+            if name.len() == 0 {
+                Person::default()
+            } else {
+                match split.next().unwrap().parse::<usize>() {
+                    Ok(age) => Person {
+                        name: name.to_string(),
+                        age,
+                    },
+                    Err(_) => Person::default(),
+                }
+            }
+        }
+    }
+}
+
+impl From<String> for Person {
+    fn from(s: String) -> Person {
+        Person::from(&s[..])
     }
 }
 
